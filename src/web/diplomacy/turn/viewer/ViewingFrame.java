@@ -33,16 +33,14 @@ public class ViewingFrame {
     private JPanel imagePanel;
     private Button button;
     private long delay;
+    private IdGetter idGetter;
     
     //Creates the viewing frame for the program
     //
     public ViewingFrame()
     {
+        //Setting the delay to a default of 1.5 seconds
         delay = 1500;
-        //Getting the resolution of the primary monitor for proper sizing
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        width = gd.getDisplayMode().getWidth();
-        height = gd.getDisplayMode().getHeight();
         
         //Creating the Frame with name "WebDiplomacy Turn Viewer"
         frame = new JFrame("WebDiplomacy Turn Viewer");
@@ -54,15 +52,13 @@ public class ViewingFrame {
         idField.setPreferredSize(new Dimension(6, 25));
         
         imagePanel = new JPanel();
-        imagePanel.setPreferredSize(new Dimension(1300 / 2, 1000 / 2));
+        imagePanel.setPreferredSize(new Dimension(650, 425));
         imagePanel.setBackground(Color.black);
         
-        
-        
-        frame.add(idField);
         frame.add(imagePanel);
         
         frame.pack();
+        idGetter = new IdGetter();
         frame.setVisible(true);
     }
     
@@ -84,5 +80,15 @@ public class ViewingFrame {
             imagePanel.remove(label);
             
         }
+    }
+    
+    public int getId()
+    {
+        return idGetter.getId();
+    }
+    
+    public void removeIdGetter()
+    {
+        idGetter.remove();
     }
 }
