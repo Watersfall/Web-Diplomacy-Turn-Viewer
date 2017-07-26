@@ -11,7 +11,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -27,12 +32,13 @@ public class ViewingFrame {
     private JTextField idField;
     private JPanel imagePanel;
     private Button button;
-    
+    private long delay;
     
     //Creates the viewing frame for the program
     //
     public ViewingFrame()
     {
+        delay = 1500;
         //Getting the resolution of the primary monitor for proper sizing
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         width = gd.getDisplayMode().getWidth();
@@ -49,12 +55,34 @@ public class ViewingFrame {
         
         imagePanel = new JPanel();
         imagePanel.setPreferredSize(new Dimension(1300 / 2, 1000 / 2));
-        imagePanel.setBackground(Color.red);
+        imagePanel.setBackground(Color.black);
+        
+        
         
         frame.add(idField);
         frame.add(imagePanel);
         
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    public void setPanel(ArrayList<TurnImage> array) throws InterruptedException
+    {
+        Icon icon;
+        JLabel label;
+        for(int i = 0; i <= array.size(); i++)
+        {
+            icon = new ImageIcon(array.get(i).getImage());
+            label = new JLabel(icon);
+            imagePanel.add(label);
+            imagePanel.updateUI();
+            Thread.sleep(delay);
+            if (i == array.size() - 1)
+            {
+                i = 0;
+            }
+            imagePanel.remove(label);
+            
+        }
     }
 }

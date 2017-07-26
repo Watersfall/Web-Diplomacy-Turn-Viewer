@@ -6,10 +6,14 @@
 package web.diplomacy.turn.viewer;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import javax.imageio.ImageIO;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  *
@@ -24,8 +28,9 @@ public class TurnImage {
     {
         this.turn = turn;
         this.id = id;
-        String url = "http://www.webdiplomacy.net/map.php?gameID=" + id + "&turn=" + turn + "&mapType=large";
-        image = ImageIO.read(new URL(url));
+        URL url = new URL("http://www.webdiplomacy.net/map.php?gameID=" + id + "&turn=" + turn);
+        System.out.println(url.toExternalForm());
+        image = ImageIO.read(url);
     }
     
     public BufferedImage getImage()
