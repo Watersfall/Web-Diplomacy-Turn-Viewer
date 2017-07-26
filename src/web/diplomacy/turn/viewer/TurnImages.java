@@ -51,13 +51,13 @@ public class TurnImages {
         this.id = id;
         BufferedImage previousImage = new TurnImage(-1, this.id).getImage();
         turnImages.add(new TurnImage(0, this.id));
-        int turn = 0;
-        while(!compareImages(previousImage, turnImages.get(turn).getImage()))
+        int turn = - 1;
+        while(!compareImages(previousImage, turnImages.get(turn + 1).getImage()))
         {
-            previousImage = turnImages.get(turn).getImage();
+            previousImage = turnImages.get(turn + 1).getImage();
             turn++;
-            turnImages.add(new TurnImage(turn, this.id));
-            System.out.println(turn);
+            turnImages.add(new TurnImage(turn + 1, this.id));
+            System.out.println(turn + 1);
         }
     }
     

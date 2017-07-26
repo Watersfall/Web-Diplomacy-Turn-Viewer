@@ -39,20 +39,25 @@ public class ViewingFrame {
     //
     public ViewingFrame()
     {
+        //Setting the monitor resolution to width and height
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        width = gd.getDisplayMode().getWidth();
+        height = gd.getDisplayMode().getHeight();
+        
         //Setting the delay to a default of 1.5 seconds
         delay = 1500;
         
         //Creating the Frame with name "WebDiplomacy Turn Viewer"
         frame = new JFrame("WebDiplomacy Turn Viewer");
         //Setting the size to half the current resolution, and centering it on the screen
-        frame.setBounds(width / 4, height / 4, width / 2, height / 2);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
         idField = new JTextField(20);
         idField.setPreferredSize(new Dimension(6, 25));
         
         imagePanel = new JPanel();
-        imagePanel.setPreferredSize(new Dimension(650, 425));
+        imagePanel.setPreferredSize(new Dimension(width, height));
         imagePanel.setBackground(Color.black);
         
         frame.add(imagePanel);
@@ -75,10 +80,9 @@ public class ViewingFrame {
             Thread.sleep(delay);
             if (i == array.size() - 1)
             {
-                i = 0;
+                i = -1;
             }
-            imagePanel.remove(label);
-            
+            imagePanel.remove(label); 
         }
     }
     
