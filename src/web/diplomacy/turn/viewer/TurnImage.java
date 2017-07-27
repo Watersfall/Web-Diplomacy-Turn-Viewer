@@ -51,7 +51,7 @@ public class TurnImage {
         URL url = new URL("http://www.webdiplomacy.net/map.php?gameID=" + id + "&turn=" + turn + "&mapType=large");
         System.out.println(url.toExternalForm());
         image = ImageIO.read(url);
-        image = resize(image, (int)((height - height / 12) * 1.3), height - height / 12);
+        image = resize(image, (int)((height - height / 8) * 1.3), height - height / 8);
     }
     
     public BufferedImage getImage()

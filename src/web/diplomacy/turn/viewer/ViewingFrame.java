@@ -11,10 +11,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,19 +31,58 @@ import javax.swing.JTextField;
  */
 public class ViewingFrame {
     
+    private ArrayList<TurnImage> array;
+    private JLabel label;
     private int width;
     private int height;
     private JFrame frame;
     private JTextField idField;
     private JPanel imagePanel;
-    private Button button;
+    private JButton pauseButton;
+    private JButton nextButton;
+    private JButton previousButton;
     private long delay;
     private IdGetter idGetter;
+    private int i;
+    private boolean pause;
+    ActionListener pauseListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("hit pause button");
+            pause();
+        }
+    };
+    ActionListener nextListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("hit next button");
+            if(!pause)
+                pause();
+            i++;
+            if(i >= array.size())
+                i = 0;
+            setPanelById(i);
+        }
+    };
+    ActionListener previousListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Hit back button");
+            if(!pause)
+                pause();
+            i--;
+            if(i < 0)
+                i = array.size() - 1;
+            setPanelById(i);
+        }
+    };
     
     //Creates the viewing frame for the program
     //
     public ViewingFrame()
     {
+        i = 0;
+        pause = false;
         //Setting the monitor resolution to width and height
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         width = gd.getDisplayMode().getWidth();
@@ -56,11 +100,22 @@ public class ViewingFrame {
         idField = new JTextField(20);
         idField.setPreferredSize(new Dimension(6, 25));
         
+        pauseButton = new JButton("Pause/Play");
+        nextButton = new JButton("->");
+        previousButton = new JButton("<-");
+        pauseButton.addActionListener(pauseListener);
+        nextButton.addActionListener(nextListener);
+        previousButton.addActionListener(previousListener);
+        
         imagePanel = new JPanel();
-        imagePanel.setPreferredSize(new Dimension(width, height));
+        imagePanel.setPreferredSize(new Dimension(width, height - height / 10));
         imagePanel.setBackground(Color.black);
         
         frame.add(imagePanel);
+        frame.add(previousButton);
+        frame.add(pauseButton);
+        frame.add(nextButton);
+        
         
         frame.pack();
         idGetter = new IdGetter();
@@ -69,21 +124,37 @@ public class ViewingFrame {
     
     public void setPanel(ArrayList<TurnImage> array) throws InterruptedException
     {
-        Icon icon;
-        JLabel label;
-        for(int i = 0; i <= array.size(); i++)
+        this.array = array;
+        this.array.remove(array.size() - 1);
+        Thread panelThread = new Thread()
         {
-            icon = new ImageIcon(array.get(i).getImage());
-            label = new JLabel(icon);
-            imagePanel.add(label);
-            imagePanel.updateUI();
-            Thread.sleep(delay);
-            if (i == array.size() - 1)
+            public void run()
             {
-                i = -1;
+                Icon icon;
+                for(i = 0; i <= array.size(); i++)
+                {
+                    icon = new ImageIcon(array.get(i).getImage());
+                    label = new JLabel(icon);
+                    imagePanel.add(label);
+                    imagePanel.updateUI();
+                    try {
+                        Thread.sleep(delay);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ViewingFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (i == array.size() - 1)
+                    {
+                        i = -1;
+                    }
+                    while(pause)
+                    {
+                
+                    }
+                    imagePanel.remove(label); 
+                }
             }
-            imagePanel.remove(label); 
-        }
+        };
+        panelThread.run();
     }
     
     public int getId()
@@ -94,5 +165,19 @@ public class ViewingFrame {
     public void removeIdGetter()
     {
         idGetter.remove();
+    }
+    
+    public void pause()
+    {
+        pause = !pause;
+    }
+    
+    public void setPanelById(int id)
+    {
+        Icon icon = new ImageIcon(array.get(id).getImage());
+        imagePanel.remove(label);
+        label = new JLabel(icon);
+        imagePanel.add(label);
+        imagePanel.updateUI();
     }
 }
