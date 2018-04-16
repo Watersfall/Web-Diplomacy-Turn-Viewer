@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.diplomacy.turn.viewer;
+package com.watersfall.turnviewer;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,7 +12,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -124,6 +122,7 @@ public class ViewingFrame {
     
     public void setPanel(ArrayList<TurnImage> array) throws InterruptedException
     {
+        this.frame.requestFocus();
         this.array = array;
         this.array.remove(array.size() - 1);
         Thread panelThread = new Thread()

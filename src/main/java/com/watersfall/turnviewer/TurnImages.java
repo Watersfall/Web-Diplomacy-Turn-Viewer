@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.diplomacy.turn.viewer;
+package com.watersfall.turnviewer;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.util.ArrayList;
 

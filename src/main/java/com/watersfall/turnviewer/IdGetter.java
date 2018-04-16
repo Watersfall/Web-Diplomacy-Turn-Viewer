@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.diplomacy.turn.viewer;
+package com.watersfall.turnviewer;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -22,8 +22,6 @@ public class IdGetter {
     private JFrame panel;
     private JTextField idField;
     private JButton button;
-    private ViewingFrame frame;
-    private TurnImages array;
     
     public IdGetter()
     {

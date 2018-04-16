@@ -3,21 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.diplomacy.turn.viewer;
+package com.watersfall.turnviewer;
 
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+
 import javax.imageio.ImageIO;
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  *
@@ -44,14 +41,14 @@ public class TurnImage {
     public TurnImage(int turn, int id) throws MalformedURLException, IOException
     {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        width = gd.getDisplayMode().getWidth();
-        height = gd.getDisplayMode().getHeight();
+        this.width = gd.getDisplayMode().getWidth();
+        this.height = gd.getDisplayMode().getHeight();
         this.turn = turn;
         this.id = id;
-        URL url = new URL("http://www.webdiplomacy.net/map.php?gameID=" + id + "&turn=" + turn + "&mapType=large");
+        URL url = new URL("http://www.webdiplomacy.net/map.php?gameID=" + this.id + "&turn=" + this.turn + "&mapType=large");
         System.out.println(url.toExternalForm());
         image = ImageIO.read(url);
-        image = resize(image, (int)((height - height / 8) * 1.3), height - height / 8);
+        image = resize(image, (int)((this.height - this.height / 8) * 1.3), this.height - this.height / 8);
     }
     
     public BufferedImage getImage()
